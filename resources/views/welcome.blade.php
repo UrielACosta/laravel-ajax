@@ -96,6 +96,7 @@
                 <div class="d-flex justify-content-center marginBottom">
                     <h1>CADASTRO</h1>
                 </div>
+                <div>teste</div>
                 <div class="form-group">
                     <label for="idNome">Nome</label>
                     <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idNome" name="idNome" placeholder="Nome" required>

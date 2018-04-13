@@ -20,10 +20,10 @@ class CreateUsuariosTable extends Migration
             $table->string('nome', 255);
             $table->string('email', 255);
             $table->string('telefone', 255);
-            $table->date('dataNasc')->nullable();
+            $table->string('dataNasc')->nullable();
             $table->string('cargo', 255);
             $table->float('salario');
-            $table->string('foto', 255);
+            $table->string('foto', 255)->nullable();
             $table->timestamps();
         });
     }

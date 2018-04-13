@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class Usuarios extends model
 {
     
@@ -13,10 +12,8 @@ class Usuarios extends model
     protected $guarded = ['id', 'created_at', 'update_at'];
     protected $table = 'usuarios';
 
-    public function usuario(){
+    public function usuario()
+    {
         return $this->belongsTo('App\Usuarios');
     }
-
 }
-
-

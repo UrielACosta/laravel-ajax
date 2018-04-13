@@ -25,24 +25,26 @@
 
 
 
+
 var objeto = {
 
 	listEditPerfil : function (id) {
 		$.ajax({
 			type: "GET",
-			url: "http://localhost/site/listEditPerfil.php",
+			url: "/list-edit-perfil",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			data: {
 				id:id
 			},
 			success: function(dados){
 				var html = null;
-				var result = JSON.parse(dados);
+				var result = dados;
 
 				
+			
+				$('#idperfil').val(result[0].idPerfil);	
 
-				$('#id_perfil').val(result[0].id_perfil);	
-
-				$('#idNomePerfilEdit').val(result[0].nome_Perfil);
+				$('#idNomePerfilEdit').val(result[0].nomePerfil);
 
 				$('#idPerfilDescEdit').val(result[0].descricao);
 				
@@ -52,24 +54,35 @@ var objeto = {
 
 	listagemPerfil : function() {
 		$.ajax({
-			url: "http://localhost/site/listagemPerfil.php",
+			url: "/listar-perfil",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			type: "GET",
 			success: function(dados){
 				var html = null;
-				var result = JSON.parse(dados);
+				var result = dados;
 
 				for(var i=0; i < result.length; i++){
 					html += "<tr>" +
-					"<td>" + result[i].id_perfil + "</td>" +
-					"<td>" + result[i].nome_Perfil + "</td>" +
+					"<td>" + result[i].idPerfil + "</td>" +
+					"<td>" + result[i].nomePerfil + "</td>" +
 					"<td>" + result[i].descricao + "</td>" +
-					"<td><a href='#editarperfil' class='listEditPerfil btn btn-dark' data-id='" + result[i].id_perfil + "'>Editar</span></a>"+
-					"<td><a href='#' class='deletarPerfil btn btn-info' data-id='" + result[i].id_perfil + "'>Excluir</span></a>" 
+					"<td><a href='#editarperfil' class='listEditPerfil btn btn-dark' data-id='" + result[i].idPerfil + "'>Editar</span></a>"+
+					"<td><a href='#' class='deletarPerfil btn btn-info' data-id='" + result[i].idPerfil + "'>Excluir</span></a>" 
 					"</tr>"
 
 				}
 				// 
-				$("#conteudoPerfil").html(html);	
+				$("#conteudoPerfil").html(html);
+
+				$('.listEditPerfil').click(function(){
+					$('#cadastroperfil').hide();
+					$('#editarperfilSection').show();
+					$('#editarSection').hide();
+
+					var id = $(this).attr('data-id');
+					objeto.listEditPerfil(id);
+
+				})	
 
 				$('.deletarPerfil').click(function(e){
 					e.preventDefault();
@@ -86,7 +99,8 @@ var objeto = {
 
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/editarPerfil.php",
+			url: "/edit-perfil",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			data: dados,
 			success: function()
 			{
@@ -103,7 +117,8 @@ var objeto = {
 
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/editar.php",
+			url: "/edit-usuarios",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			data: dados,
 			success: function()
 			{
@@ -117,23 +132,25 @@ var objeto = {
 	listEdit : function (id) {
 		$.ajax({
 			type: "GET",
-			url: "http://localhost/site/listEdit.php",
+			url: "/list-edit-usuarios",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+
 			data: {
 				id:id
 			},
 			success: function(dados){
 				var html = null;
-				var result = JSON.parse(dados);
+				// var result = JSON.parse(dados);
 
-				
+				result = dados;
 
 				$('#id').val(result[0].id);	
 				$('#idNomeEdit').val(result[0].nome);
 				$('#idEmailEdit').val(result[0].email);
 				$('#idTelefoneEdit').val(result[0].telefone);
 				$('#idDataNascEdit').val(result[0].dataNasc);
-				$('#idCargoEdit').val(result[0].id);
-				$('#idSalarioEdit').val(result[0].id);
+				$('#idCargoEdit').val(result[0].cargo);
+				$('#idSalarioEdit').val(result[0].salario);
 				$('#idFotoEdit').val(result[0].id);
 
 			}
@@ -145,7 +162,7 @@ var objeto = {
 		
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/deletarPerfil.php",
+			url: "/delete-perfil",
 			data: {
 				id: id
 			},
@@ -163,7 +180,7 @@ var objeto = {
 		
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/deletar.php",
+			url: "/delete-usuarios",
 			data: {
 				id: id
 			},
@@ -178,15 +195,17 @@ var objeto = {
 
 	buscaPerfil1 : function() {
 		$.ajax({
-			url: "http://localhost/site/listagemPerfil.php",
+			url: "/listar-perfil",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			type: "GET",
 			success: function(dados){
 				var html = null;
-				var result = JSON.parse(dados);
+				var result = dados;
+				console.log(dados);
 
-
+				
 				for(var i=0; i < result.length; i++){
-					html += "<option value='"+ result[i].id_perfil +"'>" + result[i].nome_Perfil+"</option>" 
+					html += "<option value='"+ result[i].idPerfil +"'>" + result[i].nomePerfil+"</option>" 
 					
 					
 
@@ -203,15 +222,17 @@ var objeto = {
 
 	buscaPerfil : function() {
 		$.ajax({
-			url: "http://localhost/site/listagemPerfil.php",
+			url: "/listar-perfil",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			type: "GET",
 			success: function(dados){
 				var html = null;
-				var result = JSON.parse(dados);
+				var result = dados;
 
 
 				for(var i=0; i < result.length; i++){
-					html += "<option value='"+ result[i].id_perfil +"'>" + result[i].nome_Perfil+"</option>" 
+
+					html += "<option value='"+ result[i].idPerfil +"'>" + result[i].nomePerfil+"</option>" 
 					
 					
 
@@ -219,8 +240,10 @@ var objeto = {
 				
 				$("#idPerfil").html(html);
 
+
+
 				
-	
+
 			}
 
 
@@ -232,12 +255,15 @@ var objeto = {
 
 	cadastrarPerfil : function(dados){
 		
-
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/cadastrarPerfil.php",
+			url: "/create-perfil",
 			data: dados,
-			success: function()
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+
+			success: function(response)
 			{
 				/* Chamando a função de busca para que imprima na tela o usuário novo assim que for cadastrado. */
 				objeto.listagemPerfil();
@@ -247,15 +273,18 @@ var objeto = {
 	},
 
 	cadastrar : function(dados){
-		
+
+
 
 		$.ajax({
 			type: "POST",
-			url: "http://localhost/site/cadastro.php",
+			url: "/create-usuarios",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			data: dados,
 			success: function()
 			{
-				/* Chamando a função de busca para que imprima na tela o usuário novo assim que for cadastrado. */
+				
+
 				objeto.busca();
 			}
 
@@ -269,7 +298,7 @@ var objeto = {
 			type: "GET",
 			success: function(dados){
 				var html = null;
-				console.log(dados);
+				
 				result = dados;
 				for(var i=0; i < result.length; i++){
 
@@ -282,6 +311,8 @@ var objeto = {
 					"<td>" + result[i].cargo + "</td>" +
 					"<td>" + result[i].salario + "</td>" +
 					"<td>" + result[i].foto + "</td>" +
+					"<td>" + result[i].nomePerfil + "</td>" +
+					"<td>" + result[i].descricao + "</td>" +
 					
 
 					"<td><a href='#editar' class='listEdit btn btn-dark' data-id='" + result[i].id + "'>Editar</span></a>"+
@@ -301,9 +332,10 @@ var objeto = {
 				$('.listEdit').click(function(){
 					$('#cadastro').hide();
 					$('#editarSection').show();
+					$('#editarperfilSection').hide();
 					var id = $(this).attr('data-id');
 					objeto.buscaPerfil1();
-
+					console.log(id);
 					objeto.listEdit(id);
 
 				})
@@ -320,9 +352,20 @@ var objeto = {
 }		
 /* Chamando a função de busca para que imprima na tela todos os usuários do banco assim que a página for carregada. */
 
+$.ajaxSetup({
+
+	headers: {
+
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+	}
+
+});
+
+
 
 objeto.busca();
-// objeto.listagemPerfil();
+objeto.listagemPerfil();
 
 
 // var obj = new objeto;
@@ -330,11 +373,21 @@ objeto.busca();
 
 $(document).ready(function(){
 
+	$.ajaxSetup({
+
+		headers: {
+
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+		}
+
+	});
+
 
 	
 	$('#btnTabelaShow').click(function(){
 
-		// objeto.buscaPerfil();
+		objeto.buscaPerfil();
 		
 		$('#tabela').show();
 		$('#tabelaPerfil').show();
@@ -346,7 +399,7 @@ $(document).ready(function(){
 	
 	$('#btnTabelaHide').click(function(){
 
-		// objeto.buscaPerfil();
+		objeto.buscaPerfil();
 		
 		$('#tabela').hide();
 		$('#tabelaPerfil').hide();
@@ -358,10 +411,11 @@ $(document).ready(function(){
 
 	$('#btnCadastrarPerfil').click(function(){
 
-		// objeto.buscaPerfil();
+		objeto.buscaPerfil();
 		$('#editarperfil').hide();
 		$('#cadastroperfil').show();
 		$('#cadastro').hide();
+
 		$('#editarSection').hide();
 		
 	})
@@ -385,7 +439,7 @@ $(document).ready(function(){
 		
 	})
 
-	$('#editarperfil').hide();
+	$('#editarperfilSection').hide();
 	$('#cadastroperfil').hide();
 	$('#cadastro').hide();
 	$('#editarSection').hide();
@@ -393,6 +447,7 @@ $(document).ready(function(){
 	$('.listEdit').click(function(){
 		$('#cadastro').hide();
 		$('#editarSection').show();
+		$('#editarperfilSection').hide();
 
 		var id = $(this).attr('data-id');
 		objeto.buscaPerfil1();
@@ -402,29 +457,46 @@ $(document).ready(function(){
 
 	$('.listEditPerfil').click(function(){
 
+
+
 		$('#cadastroperfil').hide();
-		$('#editarperfil').show();
+		$('#editarperfilSection').show();
+		$('#editarSection').hide();
 
 		var id = $(this).attr('data-id');
-
 		objeto.listEditPerfil(id);
 
 	})
 
-	$('#editar').submit(function(){
+	$('#editarperfil').submit(function(){
+
+
 		var dados = $( this ).serialize();
-		// var obj = new objeto;
+		console.log(dados);
+		objeto.editarPerfil(dados);
+
+		return false;		
+	})
+
+	$('#editar').submit(function(){
+
+
+		var dados = $( this ).serialize();
+		console.log(dados);
 		objeto.editar(dados);
+		$('#editarSection').hide();
 
 		return false;		
 	})
 
 	$('#editarperfilform').submit(function(){
+
 		var dados = $( this ).serialize();
-		// var obj = new objeto;
-
 		objeto.editarPerfil(dados);
-
+		
+		$('#editarperfilSection').hide();
+		
+		
 		return false;		
 	})
 
@@ -446,8 +518,12 @@ $(document).ready(function(){
 	$('#usuario').submit(function(){
 		var dados = $( this ).serialize();
 
-		
+
 		objeto.cadastrar(dados);
+
+		$('#cadastro').hide();
+		$('#tabela').show();
+
 
 		return false;		
 	})
