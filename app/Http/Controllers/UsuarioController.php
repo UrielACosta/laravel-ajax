@@ -59,7 +59,7 @@ class UsuarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function editUsuarios()
@@ -75,8 +75,8 @@ class UsuarioController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
      * @return \Illuminate\Http\Response
      */
     public function listEditUsuarios()
@@ -91,7 +91,7 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function deleteUsuarios()
@@ -100,5 +100,57 @@ class UsuarioController extends Controller
         DB::table('usuarios')->where('id', $id)->delete();
     }
 
+    public function upload(Request $request)
+    {
+
+
+
+
+        $nameFile = null;
+        $idUsuario = $request['idImagem'];
+
+
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('fileupload') && $request->file('fileupload')->isValid()) {
+
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+
+            // Recupera a extensão do arquivo
+            $extension = $request->fileupload->extension();
+
+            // Define finalmente o nome
+            $nameFile = "{$name}.{$extension}";
+
+            // Faz o upload:
+            $upload = $request->fileupload->storeAs('categories', $nameFile);
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+
+            DB::table('usuarios')
+            ->where('id', $idUsuario)
+            ->update(['foto' => $nameFile]);
+
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if (!$upload ) {
+                return redirect()
+                ->back()
+                ->with('error', 'Falha ao fazer upload')
+                ->withInput();
+            }
+
+            return redirect('/');
+
+        }
+
     
+     
+
+   
+    
+
+
+
+    }
+
+
 }

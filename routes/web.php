@@ -39,7 +39,7 @@ Route::get('/list-edit-perfil', 'PerfilController@listEditPerfil');
 
 Route::post('/delete-perfil', 'PerfilController@deleteUsuarios');
 
-
+Route::post('/upload', 'UsuarioController@upload');
 
 
 

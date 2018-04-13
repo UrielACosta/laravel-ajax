@@ -6,6 +6,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta charset="utf-8">
    <!-- BOOTSTRAP VERSÃO 4.0 -->
+
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.21.0/css/jquery.fileupload.css">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">  
    <link rel="stylesheet" type="text/css" href="{{asset('css/estilo.css')}}">
 
@@ -14,8 +16,13 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
+
+
    <script type="text/javascript" src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
    <script type="text/javascript" src="{{asset('js/script.js')}}"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.21.0/js/vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8" ></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.21.0/js/jquery.fileupload.js" type="text/javascript" charset="utf-8" ></script>
 
    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -57,22 +64,10 @@
     <div class="espacamentoTop container">
         <div class="row">
             <div class="text-center col">
-
                 <button class="btn btn-dark" id="btnCadastrar">CADASTRAR USUARIO</button>
-
-                
-
-                <a href='#CadastroPerfil' id="btnCadastrarPerfil" class="btn btn-dark">CADASTRAR PERFIL</span></a>
-                
-                <a href='#CadastroPerfil' id="btnTabelaHide" class="btn btn-dark">ESCONDER TABELAS</span></a>
-                <a href='#CadastroPerfil' id="btnTabelaShow" class="btn btn-dark">MOSTRAR TABELAS</span></a>
-
-                
-
-                
-
-                <!--    <button class="btn btn-dark" id="btnMostrarTodos">MOSTRAR TODOS</button> -->
-
+                <a href='#CadastroPerfil' id="btnCadastrarPerfil" class="btn btn-dark">CADASTRAR PERFIL</a>
+                <a href='#CadastroPerfil' id="btnTabelaHide" class="btn btn-dark">ESCONDER TABELAS</a>
+                <a href='#CadastroPerfil' id="btnTabelaShow" class="btn btn-dark">MOSTRAR TABELAS</a>
             </div>
         </div>
 
@@ -91,75 +86,57 @@
 
         <!-- Section Inicio Cadastro -->
 
+      
         <section id="cadastro" class="tamanhoDatela espacamentoTop">
 
+            <div class="d-flex justify-content-center marginBottom">
+                <h1>CADASTRO</h1>
+            </div>
+            <form action="" id="usuario" method="">
 
+            <div class="form-group">
+                <label for="idNome">Nome</label>
+                <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idNome" name="idNome" placeholder="Nome" required>
+            </div>
 
+            <div class="form-group">
+                <label for="idEmail">Email</label>
+                <input type="email" class="form-control border-top-0 border-right-0 border-left-0" id="idEmail" name="idEmail" placeholder="Email" >
+            </div>
 
+            <div class="form-group">
+                <label for="idDataNasc">Data de Nascimento</label>
+                <input type="date" class="form-control border-top-0 border-right-0 border-left-0" id="idDataNasc" name="idDataNasc" placeholder="Data de Nascimento" >
+            </div>
 
-            <form  class="" id="usuario" action="" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputTelefone">Telefone</label>
+                <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idTelefone" name="idTelefone" placeholder="Telefone" >
+            </div>
 
-                <meta name="csrf_token" content="{{ csrf_token() }}" />
+            <div class="form-group">
+                <label for="idCargo">Cargo</label>
+                <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idCargo" name="idCargo" placeholder="Cargo" required>
+            </div>
 
-                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="idSalario">Salário</label>
+                <input type="number" class="form-control border-top-0 border-right-0 border-left-0" id="idSalario" name="idSalario" placeholder="" required>
+            </div>
+            <div class="form-group">
 
-                <div class="d-flex justify-content-center marginBottom">
-                    <h1>CADASTRO</h1>
-                </div>
+                <label for="idPerfil">Escolha seu tipo de usuário</label>
+                <select id="idPerfil" name="idPerfil" class="form-control">
 
-                
+                </select>
 
-
-
-                <div class="form-group">
-                    <label for="idNome">Nome</label>
-                    <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idNome" name="idNome" placeholder="Nome" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="idEmail">Email</label>
-                    <input type="email" class="form-control border-top-0 border-right-0 border-left-0" id="idEmail" name="idEmail" placeholder="Email" >
-                </div>
-
-                <div class="form-group">
-                    <label for="idDataNasc">Data de Nascimento</label>
-                    <input type="date" class="form-control border-top-0 border-right-0 border-left-0" id="idDataNasc" name="idDataNasc" placeholder="Data de Nascimento" >
-                </div>
-
-                <div class="form-group">
-                    <label for="inputTelefone">Telefone</label>
-                    <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idTelefone" name="idTelefone" placeholder="Telefone" >
-                </div>
-                
-                <div class="form-group">
-                    <label for="idCargo">Cargo</label>
-                    <input type="text" class="form-control border-top-0 border-right-0 border-left-0" id="idCargo" name="idCargo" placeholder="Cargo" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="idSalario">Salário</label>
-                    <input type="number" class="form-control border-top-0 border-right-0 border-left-0" id="idSalario" name="idSalario" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-group">
-                        <label for="idFoto">Envie uma foto</label>
-                        <input type="file" class="form-control-file" id="idFoto">
-                    </div>
-                </div>
-                <div class="form-group">
-
-                    <label for="idPerfil">Escolha seu tipo de usuário</label>
-                    <select id="idPerfil" name="idPerfil" class="form-control">
-
-                    </select>
-                    
-                </div>
+            </div>
 
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-secondary btn-lg">CADASTRAR</button>
             </div>
         </form>
+
     </section>
 
     <!-- Section Fim Cadastro -->
@@ -189,7 +166,7 @@
                             <th scope="col">Data Nasc</th>
                             <th scope="col">Cargo</th>
                             <th scope="col">Salario</th>
-                            <th scope="col">Foto</th>
+                            <th scope="col" class="text-center">Foto</th>
                             <th scope="col">Perfil</th>
                             <th scope="col">Descrição</th>
 
@@ -320,6 +297,7 @@
             <div class="d-flex justify-content-center marginBottom">
                 <h1>CADASTRO PERFIL</h1>
             </div>
+                
 
             <input type="hidden" name="idperfil" id="idperfil">
 
@@ -339,6 +317,9 @@
             </div>
         </form>
     </section>
+
+
+
 
 
 
@@ -364,6 +345,54 @@
     </footer>
 </section>
 
+<div class="container">
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Cadastro de imagem</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+
+    <form action="upload" id="cadastrarImagem"  enctype="multipart/form-data" method="post">
+       <input id="idImagem" type="hidden" name="idImagem" value="" >
+
+           <div class="form-group">
+
+            <input id="fileupload" type="file" name="fileupload" value="">
+        </div>
+        
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-secondary btn-lg">Enviar</button>
+        </div>
+    </form>
+            
+
+
+</div>
+
+<!-- Modal footer -->
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+
 <!-- Section Fim SobreMim -->
 </body>
+
+
 </html>

@@ -28,6 +28,25 @@
 
 var objeto = {
 
+	listEditImagem : function (id) {
+		$.ajax({
+			type: "GET",
+			url: "/list-edit-usuarios",
+			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			data: {
+				id:id
+			},
+			success: function(dados){
+				var html = null;
+				result = dados;
+
+				$('#idImagem').val(result[0].id);	
+
+			}
+		})
+		
+	},
+
 	listEditPerfil : function (id) {
 		$.ajax({
 			type: "GET",
@@ -41,7 +60,7 @@ var objeto = {
 				var result = dados;
 
 				
-			
+
 				$('#idperfil').val(result[0].idPerfil);	
 
 				$('#idNomePerfilEdit').val(result[0].nomePerfil);
@@ -51,6 +70,8 @@ var objeto = {
 			}
 		})
 	},
+
+
 
 	listagemPerfil : function() {
 		$.ajax({
@@ -290,17 +311,26 @@ var objeto = {
 
 		});
 	},
+
+	
 	
 
 	busca : function() {
+
+
 		$.ajax({
 			url: "/listar-usuarios",
 			type: "GET",
 			success: function(dados){
 				var html = null;
+				var newHtml = null;
 				
 				result = dados;
 				for(var i=0; i < result.length; i++){
+
+					
+
+
 
 					html += "<tr>" +
 					"<td>" + result[i].id + "</td>" +
@@ -309,20 +339,32 @@ var objeto = {
 					"<td>" + result[i].telefone + "</td>" +
 					"<td>" + result[i].dataNasc + "</td>" +
 					"<td>" + result[i].cargo + "</td>" +
-					"<td>" + result[i].salario + "</td>" +
-					"<td>" + result[i].foto + "</td>" +
-					"<td>" + result[i].nomePerfil + "</td>" +
-					"<td>" + result[i].descricao + "</td>" +
-					
+					"<td>" + result[i].salario + "</td>" 
 
+					if (result[i].foto!=null) {
+
+
+						
+
+						html +="<td><img src='categories/" + result[i].foto + "'></td>" 
+
+					}else{
+
+						
+
+						html += "<td><button type='button' class='EnviarIdUsuario btn btn-primary' data-id='" + result[i].id + "' data-toggle='modal' data-target='#myModal'>Cadastrar foto</button></td>"
+					}
+
+					html += "<td>" + result[i].nomePerfil + "</td>" +
 					"<td><a href='#editar' class='listEdit btn btn-dark' data-id='" + result[i].id + "'>Editar</span></a>"+
 					"<td><a href='#' class='deletar btn btn-info' data-id='" + result[i].id + "'>Excluir</span></a>" 
 					"</tr>"
 
 				}
-				// 
-				$("#conteudo").html(html);	
 
+
+				$("#conteudo").html(html);	
+				
 				$('.deletar').click(function(e){
 					e.preventDefault();
 					var id = $(this).attr('data-id');
@@ -340,6 +382,18 @@ var objeto = {
 
 				})
 
+				$('.EnviarIdUsuario').click(function(){
+
+
+
+					var id = $(this).attr('data-id');
+					
+					objeto.listEditImagem(id);
+
+				})
+
+
+				
 				
 			}
 
@@ -371,6 +425,8 @@ objeto.listagemPerfil();
 // var obj = new objeto;
 
 
+
+
 $(document).ready(function(){
 
 	$.ajaxSetup({
@@ -383,31 +439,39 @@ $(document).ready(function(){
 
 	});
 
-
 	
+
+
+	var form;
+
+
+
+
+
+
 	$('#btnTabelaShow').click(function(){
 
 		objeto.buscaPerfil();
-		
+
 		$('#tabela').show();
 		$('#tabelaPerfil').show();
-		
 
-		
+
+
 	})
 
-	
+
 	$('#btnTabelaHide').click(function(){
 
 		objeto.buscaPerfil();
-		
+
 		$('#tabela').hide();
 		$('#tabelaPerfil').hide();
 
-		
+
 	})
 
-	
+
 
 	$('#btnCadastrarPerfil').click(function(){
 
@@ -417,26 +481,26 @@ $(document).ready(function(){
 		$('#cadastro').hide();
 
 		$('#editarSection').hide();
-		
+
 	})
 
 	$('#btnCadastrar').click(function(){
-		
+
 		objeto.buscaPerfil();
 
 		$('#cadastroperfil').hide();
 		$('#cadastro').show();
 		$('#editarSection').hide();
-		
+
 	})
 
 	$('#btnEditar').click(function(){
 
-		
-		
+
+
 		$('#cadastro').hide();
 		$('#editarSection').show();
-		
+
 	})
 
 	$('#editarperfilSection').hide();
@@ -452,8 +516,17 @@ $(document).ready(function(){
 		var id = $(this).attr('data-id');
 		objeto.buscaPerfil1();
 		objeto.listEdit(id);
-		
+
 	})
+
+	$('.EnviarIdUsuario').click(function(){
+
+
+		var id = $(this).attr('data-id');
+		objeto.listEditImagem(id);
+
+	})
+
 
 	$('.listEditPerfil').click(function(){
 
@@ -493,14 +566,15 @@ $(document).ready(function(){
 
 		var dados = $( this ).serialize();
 		objeto.editarPerfil(dados);
-		
+
 		$('#editarperfilSection').hide();
-		
-		
+
+
 		return false;		
 	})
 
-	
+
+
 
 
 
