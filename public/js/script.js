@@ -346,7 +346,8 @@ var objeto = {
 
 						
 
-						html +="<td><img src='categories/" + result[i].foto + "'></td>" 
+						html +="<td><img class='mg-r20' src='categories/" + result[i].foto + "'><button type='button' class='EnviarIdUsuario btn btn-primary' data-id='" + result[i].id + "' data-toggle='modal' data-target='#myModal'>Editar foto</button></td>"
+
 
 					}else{
 
